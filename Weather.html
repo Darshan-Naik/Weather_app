@@ -28,7 +28,7 @@
         }
         .temp{
             width: fit-content;
-            height: 400px;
+            min-height: 400px;
             border: 2px solid black;
             border-radius: 15px;
             padding: 25px 30px;
@@ -83,11 +83,12 @@
             border-radius: 50%;
             width: 30px;
             height: 30px;
-            background-color: rgba(0, 106, 245, 0.404);
+            background-color: rgba(0, 106, 245, 0.384);
             text-align: center;
             padding: 5px;
             margin: 0 5px;
             transition: all 300ms ease-in-out;
+            outline: none;
         }
         button:hover{
             background-color: rgb(95, 95, 253);
@@ -114,6 +115,10 @@
             font-weight: 100;
             line-height: 1.5;
         }
+        small{
+            font-weight: 100;
+            border-top: 1px solid teal;
+        }
     </style>
 </head>
 <body>
@@ -138,6 +143,7 @@
                 <p id="min_max"></p>
                 <p id="wind"></p>
              </div>
+             <small>Designed & developed by <strong> Darshan Naik</strong></small>
         </div>
     </div>
 
@@ -154,11 +160,8 @@
         const apiId = "d6098c59a2769c9d57bcd811006a6c70"
         var place;
         function load(){
-            place = localStorage.getItem("place")
-            let input = document.querySelector("#search").value
-            if(place == null){
-                place = "bangalore"
-            } 
+            place = localStorage.getItem("place") || "bangalore"
+            let input = document.querySelector("#search").value 
             if(input != ""){
                 place = input
                 localStorage.setItem("place",input)
@@ -173,7 +176,7 @@
             .then(data => {
                 console.log(data)
                 temp.innerHTML=`${Math.round(data.main.temp)}°<span>C</span>`
-                city.innerHTML=`Wether in ${data.name}`
+                city.innerHTML=`Weather in ${data.name}`
                 disp.innerHTML=`${data.weather[0].description}`
                 icon.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
                 humidity.innerHTML = `Humidity  ${data.main.humidity}%`
