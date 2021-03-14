@@ -104,7 +104,7 @@
             font-weight: 300;
         }
         #icon{
-            width: 50px;
+            width: 80px;
         }
         #min_max>span{
             font-size: 15px;
@@ -126,7 +126,7 @@
         <div class="temp">
             <div class="search_box">
                  <input type="text" placeholder="Search" id="search">
-                 <button onclick="load()"><img src="https://img.icons8.com/ios-filled/20/ffffff/search--v1.png"/></button>
+                 <button onclick="load()" id="Search_btn"><img src="https://img.icons8.com/ios-filled/20/ffffff/search--v1.png"/></button>
             </div>
             <div class="city">
                 <p id="city"></p>
@@ -158,13 +158,13 @@
         const min_max = document.querySelector("#min_max")
         const wind = document.querySelector("#wind")
         const apiId = "d6098c59a2769c9d57bcd811006a6c70"
+        const input_search = document.querySelector("#search");
         var place;
         function load(){
             place = localStorage.getItem("place") || "bangalore"
-            let input = document.querySelector("#search").value 
+            let input = input_search.value 
             if(input != ""){
                 place = input
-                localStorage.setItem("place",input)
             }
             var params = new URLSearchParams(url.search)
                 params.set("q",place)
@@ -174,7 +174,20 @@
             fetch(url)
             .then(resp => resp.json())
             .then(data => {
+
+                if(data.cod == "404"){
+                   // alert(data.message)
+                   input_search.value = null
+                   input_search.placeholder = data.message
+                   setTimeout(()=>{
+                    input_search.placeholder = "Search"
+                   },2000)
+                } else {
                 console.log(data)
+                setTimeout(()=>{
+                    input_search.value = null
+                   },1500)
+                localStorage.setItem("place",place)
                 temp.innerHTML=`${Math.round(data.main.temp)}°<span>C</span>`
                 city.innerHTML=`Weather in ${data.name}`
                 disp.innerHTML=`${data.weather[0].description}`
@@ -182,9 +195,15 @@
                 humidity.innerHTML = `Humidity  ${data.main.humidity}%`
                 min_max.innerHTML = `Temperature  ${data.main.temp_max}°<span>C</span> / ${data.main.temp_min}°<span>C</span>`
                 wind.innerHTML = `Wind speed  ${data.wind.speed}km/h`
+                }
             })
         }
         load()
+        input_search.addEventListener("keyup",(event)=>{
+           if(event.keyCode == 13){
+                    document.querySelector("#Search_btn").click()
+           }
+        }) 
     </script>
 </body>
 </html>
