@@ -40,7 +40,7 @@ function load(){
         temp.innerHTML=`${Math.round(data.main.temp)}°<span>C</span>`
         city.innerHTML=`Weather in ${data.name}`
         disp.innerHTML=`${data.weather[0].description}`
-        icon.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+        icon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
         humidity.innerHTML = `Humidity  ${data.main.humidity}%`
         min_max.innerHTML = `Temperature  ${data.main.temp_max}°<span>C</span> / ${data.main.temp_min}°<span>C</span>`
         wind.innerHTML = `Wind speed  ${data.wind.speed}km/h`
